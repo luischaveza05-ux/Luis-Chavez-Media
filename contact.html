@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis Chavez · Contact</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ---- CONTACT-SPECIFIC STYLES ---- */
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 10px;
+        }
+
+        .contact-card {
+            border: 3px solid var(--black);
+            padding: 30px;
+            background: var(--white);
+        }
+
+        .contact-card h3 {
+            margin-top: 0;
+        }
+
+        .contact-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .contact-list li {
+            display: flex;
+            align-items: center;
+            padding-left: 0;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .contact-list li::before { content: none; }
+
+        .contact-list i {
+            display: inline-block;
+            width: 2.2rem;
+            font-style: normal;
+            flex-shrink: 0;
+        }
+
+        .red-block {
+            background: var(--red);
+            color: var(--white);
+            padding: 30px;
+            border: 3px solid var(--black);
+            font-weight: 600;
+            text-transform: uppercase;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .red-block p {
+            color: var(--white);
+            font-size: 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .red-block p:last-child { margin-bottom: 0; }
+
+        /* ---- CONTACT FORM ---- */
+        .contact-form-section {
+            margin-top: 40px;
+            border-top: 3px solid var(--red);
+            padding-top: 30px;
+        }
+
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            color: var(--black);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            border: 2px solid var(--black);
+            padding: 10px 12px;
+            font-family: inherit;
+            font-size: 1rem;
+            background: var(--white);
+            color: var(--black);
+            outline: none;
+            transition: border-color 0.1s;
+            resize: vertical;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--red);
+        }
+
+        .form-group textarea { min-height: 130px; }
+
+        .form-submit {
+            grid-column: 1 / -1;
+        }
+
+        .btn-submit {
+            background: var(--black);
+            color: var(--white);
+            border: 2px solid var(--black);
+            padding: 12px 32px;
+            font-family: inherit;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.1s;
+        }
+
+        .btn-submit:hover {
+            background: var(--red);
+            border-color: var(--red);
+        }
+
+        /* ---- HONEYPOT (hidden from real users) ---- */
+        .hp-field {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            opacity: 0;
+            pointer-events: none;
+            tab-index: -1;
+            aria-hidden: true;
+        }
+
+        /* ---- MATH CAPTCHA ---- */
+        .captcha-group {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            border: 2px solid var(--black);
+            padding: 14px 16px;
+            background: #f7f7f7;
+        }
+
+        .captcha-question {
+            font-weight: 800;
+            font-size: 1.1rem;
+            white-space: nowrap;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+
+        .captcha-input {
+            border: 2px solid var(--black) !important;
+            width: 70px !important;
+            padding: 8px 10px !important;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .captcha-input:focus {
+            border-color: var(--red) !important;
+        }
+
+        .captcha-label {
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            color: #666;
+        }
+
+        /* ---- EMAIL REVEAL ---- */
+        .email-reveal {
+            cursor: pointer;
+            border-bottom: 2px dashed var(--red);
+            display: inline-block;
+            font-size: 1.1rem;
+            transition: opacity 0.15s;
+        }
+        .email-reveal:hover { opacity: 0.7; }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 768px) {
+            .contact-grid,
+            .contact-form {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width { grid-column: 1; }
+            .form-submit { grid-column: 1; }
+            .captcha-group { grid-column: 1; flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+<div class="site-wrapper">
+
+    <header>
+        <div class="header-top">
+            <h1>Luis Chavez</h1>
+            <span class="header-tagline">Media Production</span>
+        </div>
+        <nav class="tabs">
+            <a href="index.html">Home</a>
+            <a href="work.html">Experience</a>
+            <a href="contact.html" class="active">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Contact</h2>
+
+        <!-- INFO GRID -->
+        <div class="contact-grid">
+            <div class="contact-card">
+                <h3>Reach Out</h3>
+                <ul class="contact-list">
+                    <!--
+                        EMAIL PROTECTION:
+                        The real address is split and assembled by JS only when the
+                        user clicks the link — bots scraping raw HTML never see it.
+                    -->
+                    <li>
+                        <i>📧</i>
+                        <span
+                            class="email-reveal"
+                            id="emailReveal"
+                            role="button"
+                            tabindex="0"
+                            title="Click to reveal email"
+                        >Click to reveal email</span>
+                    </li>
+                    <li><i>🔗</i> <a href="https://www.linkedin.com/in/luis-chavez-1a1b941b1/" target="_blank" rel="noopener">LinkedIn</a></li>
+                    <li><i>▶️</i> <a href="https://www.youtube.com/@lac2517" target="_blank" rel="noopener">YouTube</a></li>
+                    <li><i>💼</i> <a href="https://profile.indeed.com/?hl=en_US&co=US&from=gnav-homepage" target="_blank" rel="noopener">Indeed Profile</a></li>
+                </ul>
+                <a href="Luis Chavez Resume.pdf" download class="btn-submit" style="display:inline-block; margin-top:20px; text-decoration:none; border:none;">Download Resume ↓</a>
+            </div>
+
+            <div class="red-block">
+                <p style="font-size:1.5rem; margin-bottom:1rem;">■</p>
+                <p>Based in Houston, TX.<br>Open for collaborations, full-time positions, or just a conversation.</p>
+                <p style="margin-top:1.5rem; font-size:0.85rem; opacity:0.85;">——</p>
+            </div>
+        </div>
+
+        <!-- CONTACT FORM -->
+        <div class="contact-form-section">
+            <h2 style="border-bottom:none; display:block;">Send a Message</h2>
+            <form class="contact-form" id="contactForm" novalidate>
+
+                <!-- HONEYPOT: hidden field — bots fill it, real users don't -->
+                <div class="hp-field" aria-hidden="true">
+                    <label for="website">Website (leave blank)</label>
+                    <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                </div>
+
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" placeholder="Your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="your@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="subject">Subject</label>
+                    <input type="text" id="subject" name="subject" placeholder="Project inquiry, collab, etc.">
+                </div>
+                <div class="form-group">
+                    <label for="phone">Phone (optional)</label>
+                    <input type="tel" id="phone" name="phone" placeholder="+1 (000) 000-0000">
+                </div>
+                <div class="form-group full-width">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" placeholder="Tell me about your project…" required></textarea>
+                </div>
+
+                <!-- MATH CAPTCHA -->
+                <div class="captcha-group">
+                    <span class="captcha-label">Verify:&nbsp;</span>
+                    <span class="captcha-question" id="captchaQuestion">…</span>
+                    <span style="font-weight:700;">=</span>
+                    <input
+                        type="number"
+                        id="captchaAnswer"
+                        class="captcha-input"
+                        placeholder="?"
+                        autocomplete="off"
+                        required
+                    >
+                    <button
+                        type="button"
+                        id="refreshCaptcha"
+                        title="New question"
+                        style="background:none;border:none;cursor:pointer;font-size:1.1rem;padding:4px;"
+                    >🔄</button>
+                </div>
+
+                <div class="form-submit">
+                    <button type="submit" class="btn-submit">Send Message ▶</button>
+                    <p id="formStatus" style="margin-top:10px; font-size:0.9rem; color:var(--red); display:none;"></p>
+                </div>
+            </form>
+        </div>
+
+    </main>
+
+    <footer class="page-footer">
+        <p>© 2025 Luis A. Chavez — Swiss brutalist edition / red accent / grid system</p>
+    </footer>
+
+</div><!-- /.site-wrapper -->
+
+<script>
+/* ================================================================
+   1. EMAIL PROTECTION
+   The address is split into parts and only assembled in memory when
+   the user clicks. Bots scraping raw HTML or the DOM never see it.
+================================================================ */
+(function () {
+    const parts = ['luischaveza05', '@', 'gmail', '.com'];   // ← change if needed
+    const el    = document.getElementById('emailReveal');
+    let   revealed = false;
+
+    function reveal() {
+        if (revealed) return;
+        const addr = parts.join('');
+        el.textContent = addr;
+        el.setAttribute('role', 'link');
+        el.style.borderBottomStyle = 'solid';
+        el.onclick = () => { window.location.href = 'mailto:' + addr; };
+        el.onkeydown = (e) => { if (e.key === 'Enter') el.onclick(); };
+        revealed = true;
+    }
+
+    el.addEventListener('click',   reveal);
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter') reveal(); });
+})();
+
+
+/* ================================================================
+   2. MATH CAPTCHA
+   Generates a simple random arithmetic question each page load.
+   The expected answer is stored only in a JS closure (not in the DOM).
+================================================================ */
+let captchaExpected;
+
+function generateCaptcha() {
+    const ops = ['+', '-', '×'];
+    const op  = ops[Math.floor(Math.random() * ops.length)];
+    let a, b, answer;
+
+    if (op === '+') {
+        a = Math.floor(Math.random() * 15) + 1;
+        b = Math.floor(Math.random() * 15) + 1;
+        answer = a + b;
+    } else if (op === '-') {
+        a = Math.floor(Math.random() * 15) + 5;
+        b = Math.floor(Math.random() * a) + 1;
+        answer = a - b;
+    } else {                         // ×
+        a = Math.floor(Math.random() * 9)  + 2;
+        b = Math.floor(Math.random() * 9)  + 2;
+        answer = a * b;
+    }
+
+    document.getElementById('captchaQuestion').textContent = `${a} ${op} ${b}`;
+    document.getElementById('captchaAnswer').value = '';
+    captchaExpected = answer;
+}
+
+generateCaptcha();
+document.getElementById('refreshCaptcha').addEventListener('click', generateCaptcha);
+
+
+/* ================================================================
+   3. FORM VALIDATION + HONEYPOT CHECK
+================================================================ */
+const form       = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name    = form.name.value.trim();
+    const email   = form.email.value.trim();
+    const message = form.message.value.trim();
+    const hp      = form.website.value.trim();   // honeypot
+    const answer  = parseInt(document.getElementById('captchaAnswer').value, 10);
+
+    // 1. Honeypot — silently reject if filled
+    if (hp) {
+        formStatus.textContent  = '✓ Message sent!';   // fake success to fool bots
+        formStatus.style.color  = 'green';
+        formStatus.style.display = 'block';
+        form.reset();
+        generateCaptcha();
+        return;
+    }
+
+    // 2. Required fields
+    if (!name || !email || !message) {
+        formStatus.textContent   = '⚠ Please fill in Name, Email, and Message.';
+        formStatus.style.color   = 'var(--red)';
+        formStatus.style.display = 'block';
+        return;
+    }
+
+    // 3. CAPTCHA check
+    if (isNaN(answer) || answer !== captchaExpected) {
+        formStatus.textContent   = '⚠ Incorrect answer — please try the math question again.';
+        formStatus.style.color   = 'var(--red)';
+        formStatus.style.display = 'block';
+        generateCaptcha();
+        return;
+    }
+
+    /*
+     * ✅ All checks passed.
+     * Hook up your real form handler here:
+     *   - Formspree: fetch('https://formspree.io/f/YOUR_ID', { method:'POST', body: new FormData(form) })
+     *   - Netlify:   just add `netlify` attribute to <form>
+     *   - EmailJS:   emailjs.sendForm(...)
+     */
+    formStatus.textContent   = '✓ Message sent! I\'ll get back to you soon.';
+    formStatus.style.color   = 'green';
+    formStatus.style.display = 'block';
+    form.reset();
+    generateCaptcha();
+});
+</script>
+</body>
+</html>

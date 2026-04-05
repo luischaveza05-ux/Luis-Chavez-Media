@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis Chavez · Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ---- WORK-SPECIFIC STYLES ---- */
+
+        .work-subnav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 20px 0 30px 0;
+            border-bottom: 2px solid var(--black);
+            padding-bottom: 10px;
+        }
+
+        .company-btn {
+            background: none;
+            border: 2px solid transparent;
+            padding: 6px 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--black);
+            cursor: pointer;
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.1s;
+        }
+
+        .company-btn:hover {
+            border-color: var(--red);
+            color: var(--red);
+        }
+
+        .company-btn.active {
+            border-color: var(--red);
+            background: var(--red);
+            color: var(--white);
+        }
+
+        .company-details {
+            display: none;
+            margin-top: 1rem;
+        }
+
+        .company-details.active { display: block; }
+
+        /* ---- JOB CARDS ---- */
+        .job {
+            margin-bottom: 2rem;
+            padding: 20px;
+            border: 2px solid var(--black);
+            background: var(--white);
+        }
+
+        .job h3 {
+            margin-top: 0;
+            font-size: 1.3rem;
+        }
+
+        .job h3::before {
+            content: '▶';
+            color: var(--red);
+            margin-right: 6px;
+        }
+
+        .company-name {
+            font-weight: 700;
+            color: var(--red);
+            margin-bottom: 0.8rem;
+            text-transform: uppercase;
+            font-size: 0.9rem;
+            display: block;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 10px;
+            background: var(--gray);
+            border: 1px solid var(--black);
+            margin: 0.8rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--red);
+        }
+
+        .achievements {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 1rem;
+        }
+
+        /* ---- PROJECT FOLDERS ---- */
+        .projects-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 20px;
+            margin-top: 20px;
+            border-top: 1px dashed var(--red);
+            padding-top: 12px;
+            /* NO padding-bottom — tabs need to sit flush against the panel */
+            list-style: none;
+            position: relative;
+        }
+
+        /* Suppress global li dash on project items */
+        .projects-list li,
+        .projects-list li::before { padding-left: 0; content: none; }
+
+        .project-item {
+            margin: 0;
+            padding: 6px 10px;
+            background: transparent;
+            transition: background 0.1s;
+            /* transparent border as placeholder so layout doesn't shift on highlight */
+            border: 2px solid transparent;
+            position: relative;
+            bottom: 0;
+        }
+
+        .project-item.highlight {
+            background: var(--white);
+            /* red on top + sides, white on bottom to merge with panel */
+            border-top: 2px solid var(--red);
+            border-left: 2px solid var(--red);
+            border-right: 2px solid var(--red);
+            border-bottom: 2px solid var(--white);
+            /* push down to overlap the panel's top border by 2px */
+            position: relative;
+            bottom: -2px;
+            z-index: 2;
+            margin-bottom: 0;
+        }
+
+        .project-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            white-space: nowrap;
+            user-select: none;
+        }
+
+        .project-folder {
+            width: 22px;
+            flex-shrink: 0;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+
+        .project-folder:hover { transform: scale(1.1); }
+
+        .project-folder svg {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .project-text {
+            font-size: 1rem;
+            color: var(--black);
+        }
+
+        /* ---- COMPANY BLURB & ROLE DESCRIPTION ---- */
+        .company-blurb {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            font-style: italic;
+            border-left: 3px solid var(--light-gray);
+            padding-left: 10px;
+            margin: 0.8rem 0;
+            line-height: 1.5;
+        }
+
+        .role-description {
+            font-size: 1rem;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            margin: 0.8rem 0 1rem 0;
+        }
+
+        /* ---- GAP CARDS ---- */
+        .gap-card {
+            margin-bottom: 1rem;
+            padding: 12px 16px;
+            border: 1px dashed var(--dark-gray);
+            background: var(--gray);
+            display: flex;
+            align-items: baseline;
+            gap: 12px;
+            flex-wrap: wrap;
+            opacity: 0.75;
+        }
+
+        .gap-card .gap-role {
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            color: var(--black);
+        }
+
+        .gap-card .gap-company {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+        }
+
+        .gap-card .gap-date {
+            font-size: 0.8rem;
+            color: var(--dark-gray);
+            margin-left: auto;
+            font-style: italic;
+            white-space: nowrap;
+        }
+
+        .gap-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--dark-gray);
+            margin-bottom: 6px;
+            margin-top: 1.5rem;
+        }
+
+        /* ---- PROJECT INTRO ---- */
+        .project-intro {
+            font-size: 0.95rem;
+            color: var(--dark-gray);
+            line-height: 1.6;
+            margin: 16px 0 8px 0;
+            border-top: 1px dashed var(--red);
+            padding-top: 12px;
+        }
+
+        /* ---- DETAIL PANEL ---- */
+        .project-detail-panel {
+            display: none;
+            margin-top: 0;
+            padding: 20px;
+            background: var(--white);
+            border: 2px solid var(--red);
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-detail-panel.active { display: block; }
+
+        .detail-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--red);
+        }
+
+        .detail-description {
+            font-size: 1rem;
+            color: var(--dark-gray);
+            border-left: 3px solid var(--red);
+            padding-left: 12px;
+            margin-bottom: 15px;
+        }
+
+        .detail-photos {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+        }
+
+        .detail-photos img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            border: 2px solid var(--black);
+            display: block;
+            cursor: zoom-in;
+            transition: opacity 0.1s;
+        }
+
+        .detail-photos img:hover { opacity: 0.85; }
+
+        /* ---- LIGHTBOX ---- */
+        #lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #lightbox.active { display: flex; }
+
+        #lightbox img {
+            max-width: 90vw;
+            max-height: 88vh;
+            object-fit: contain;
+            border: 3px solid var(--white);
+            display: block;
+        }
+
+        #lightbox-close {
+            position: fixed;
+            top: 20px;
+            right: 28px;
+            font-size: 2.5rem;
+            color: var(--white);
+            cursor: pointer;
+            font-weight: 800;
+            line-height: 1;
+            user-select: none;
+            transition: color 0.1s;
+        }
+
+        #lightbox-close:hover { color: var(--red); }
+
+        #lightbox-caption {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: var(--white);
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            opacity: 0.7;
+        }
+
+        #lightbox-counter {
+            position: fixed;
+            top: 22px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: var(--white);
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            font-family: 'Inter', sans-serif;
+            pointer-events: none;
+        }
+
+        .lightbox-nav {
+            position: fixed;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.4);
+            color: var(--white);
+            font-size: 2rem;
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s, border-color 0.15s;
+            z-index: 10001;
+            line-height: 1;
+        }
+
+        .lightbox-nav:hover { background: var(--red); border-color: var(--red); }
+        #lightbox-prev { left: 20px; }
+        #lightbox-next { right: 20px; }
+    </style>
+</head>
+<body>
+<div class="site-wrapper">
+
+    <header>
+        <div class="header-top">
+            <h1>Luis Chavez</h1>
+            <span class="header-tagline">Media Production</span>
+        </div>
+        <nav class="tabs">
+            <a href="index.html">Home</a>
+            <a href="work.html" class="active">Experience</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Experience</h2>
+        <p style="margin-bottom: 10px;">
+            <a href="Luis Chavez Resume.pdf" download style="font-size:0.9rem; text-transform:uppercase; letter-spacing:0.5px;">↓ Download Resume (PDF)</a>
+        </p>
+        <div class="work-subnav">
+            <button class="company-btn active" data-company="stinger">Stinger Chemical</button>
+            <button class="company-btn" data-company="gallery">Gallery Furniture</button>
+            <button class="company-btn" data-company="hlsr">HLSR</button>
+            <button class="company-btn" data-company="ymca">YMCA</button>
+            <button class="company-btn" data-company="other">Other Experience</button>
+        </div>
+
+        <div class="company-details-container">
+
+            <!-- ======== STINGER CHEMICAL ======== -->
+            <div id="stinger" class="company-details active">
+                <p class="company-blurb">Stinger Chemical is a Houston-based manufacturer of professional car care and detailing products, selling to dealerships, retailers, and consumers nationwide. They are known for high-performance formulas and a fast-growing presence in the automotive aftermarket space.</p>
+
+                <!-- Job 1 -->
+                <div class="job" id="job-stinger1">
+                    <h3>Video Production &amp; Digital Asset Manager</h3>
+                    <span class="company-name">Stinger Chemical | June 2024 – Present</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:70%"></div></div>
+                    <p class="role-description">I manage the full lifecycle of video and digital content — from concept and filming through editing and distribution across all social platforms. Day-to-day I collaborate with the team to develop product showcases, produce podcasts and training live streams, build trade-show assets, and maintain a consistent visual brand, while also organizing and overseeing the company's entire digital asset library.</p>
+                    <div class="achievements">
+                        <span class="badge small">SEMA 2025</span>
+                        <span class="badge small">Pikes Peak Documentary</span>
+                        <span class="badge small">Golf Car X</span>
+                        <span class="badge small">Podcast Studio</span>
+                        <span class="badge small">Instagram Monetized</span>
+                    </div>
+                    <p class="project-intro">Below are the key projects from this role. Click a folder to see what went into each one.</p>
+                    <ul class="projects-list">
+                        <li class="project-item">
+                            <div class="project-header" data-project="pikes">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">Pikes Peak documentary</span>
+                            </div>
+                        </li>
+                        <li class="project-item">
+                            <div class="project-header" data-project="sema">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">SEMA 2025</span>
+                            </div>
+                        </li>
+                        <li class="project-item">
+                            <div class="project-header" data-project="hive">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">Fully Operational Podcast · The Hive</span>
+                            </div>
+                        </li>
+                        <li class="project-item">
+                            <div class="project-header" data-project="golfcar">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">Golf Car X Site & Videos</span>
+                            </div>
+                        </li>
+                        <li class="project-item">
+                            <div class="project-header" data-project="training">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">Training series</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="project-detail-panel" id="detail-stinger1"></div>
+                </div>
+
+                <!-- Job 2 -->
+                <div class="job" id="job-stinger2">
+                    <h3>Social Media Assistant</h3>
+                    <span class="company-name">Stinger Chemical | July 2023 – June 2024</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p class="role-description">I maintained and enhanced Stinger's brand image through videography, editing, photography, and graphic design, creating and scheduling social media content to drive engagement and growth. I directed live training sessions from technical setup to execution, designed graphics for videos and live streams, and refreshed the social media layouts to align with evolving trends — establishing a modern, uniform presence across all platforms.</p>
+                    <div class="achievements">
+                        <span class="badge small">The Hive Launch</span>
+                        <span class="badge small">Live Trainings</span>
+                        <span class="badge small">Social Consolidation</span>
+                    </div>
+                    <p class="project-intro">Below are the key projects from this role. Click a folder to see what went into each one.</p>
+                    <ul class="projects-list">
+                        <li class="project-item">
+                            <div class="project-header" data-project="hive2">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">The Hive Launch</span>
+                            </div>
+                        </li>
+                        <li class="project-item">
+                            <div class="project-header" data-project="training2">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">Live training multicam</span>
+                            </div>
+                        </li>
+                        <li class="project-item">
+                            <div class="project-header" data-project="sema2">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">SEMA 2024</span>
+                            </div>
+                        </li>
+                        <li class="project-item">
+                            <div class="project-header" data-project="brandconsolidation">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">Brand Consolidation</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="project-detail-panel" id="detail-stinger2"></div>
+                </div>
+            </div><!-- /#stinger -->
+
+
+
+            <!-- ======== YMCA ======== -->
+            <div id="ymca" class="company-details">
+                <p class="company-blurb">The YMCA of Greater Houston is a nonprofit community organization offering youth development, healthy living, and social responsibility programs across the Houston metro area. It serves hundreds of thousands of members and participants through its branches, camps, and afterschool programs.</p>
+
+                <div class="job" id="job-ymca1">
+                    <h3>Site Lead</h3>
+                    <span class="company-name">YMCA of Greater Houston | Aug 2021 – May 2024</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p class="role-description">As Site Lead I was responsible for supervising the full afterschool program at my location — planning and implementing daily activities, managing staff, and ensuring a safe and structured environment for every child. My focus was on supporting each kid's social, emotional, physical, and cognitive development through intentional programming.</p>
+                    <div class="achievements">
+                        <span class="badge small">Program Leadership</span>
+                        <span class="badge small">Child Development</span>
+                    </div>
+                </div>
+                <div class="job" id="job-ymca2">
+                    <h3>Wellness Floor Attendant</h3>
+                    <span class="company-name">YMCA of Greater Houston | Jun 2023 – Jul 2023</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p class="role-description">On the wellness floor I provided excellent customer service to members in a safe, enjoyable, and positive environment. I was there to support member wellness and engagement day-to-day, ensuring everyone had a great experience in line with YMCA standards and policies.</p>
+                    <div class="achievements">
+                        <span class="badge small">Member Wellness</span>
+                        <span class="badge small">Floor Operations</span>
+                    </div>
+                </div>
+                <div class="job" id="job-ymca3">
+                    <h3>Summer Camp Counselor</h3>
+                    <span class="company-name">YMCA of Greater Houston | May 2018 – Jul 2023</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p class="role-description">Every summer I created a safe, fun, and inclusive environment for campers across pool, gym, and outdoor activities. I focused on teaching kids teamwork, fair play, and how to build positive relationships — making sure every child walked away with a great experience and healthy habits they could carry forward.</p>
+                    <div class="achievements">
+                        <span class="badge small">Teamwork</span>
+                    </div>
+                </div>
+                <div class="job" id="job-ymca4">
+                    <h3>After School Counselor</h3>
+                    <span class="company-name">YMCA of Greater Houston | Oct 2018 – May 2021</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p class="role-description">In the Y's Kids program I assisted the Program Director with the daily administration of the before and after school curriculum — running games and activities, maintaining daily logs, and giving regular feedback to both the director and parents. My priority was always making sure every child had a safe, fun, and well-supported experience each day.</p>
+                    <div class="achievements">
+                        <span class="badge small">Curriculum Support</span>
+                        <span class="badge small">Safe Environment</span>
+                    </div>
+                </div>
+            </div><!-- /#ymca -->
+
+            <!-- ======== GALLERY FURNITURE ======== -->
+            <div id="gallery" class="company-details">
+                <div class="job" id="job-gallery1">
+                    <h3>Social Media Intern</h3>
+                    <span class="company-name">Gallery Furniture | Jun 2024 – Jul 2024</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p class="company-blurb">Gallery Furniture is a Houston institution known for its larger-than-life owner Jim "Mattress Mack" McIngvale and its commitment to same-day furniture delivery. It is one of the highest-revenue independent furniture retailers in the United States.</p>
+                    <p class="role-description">My time at Gallery Furniture was brief, but it gave me a valuable glimpse into the inner workings of a Houston institution. As many know, Mattress Mack is an iconic figure in the city — and behind that presence is an entire team of remote media editors working to keep his brand active and engaging.
+My role on weekends was to film Mack on demand, then deliver the footage to that remote editorial suite for production and posting. I also took the initiative to produce a few videos independently as personal skill-building exercises, though they were never released.
+It was an unconventional experience, to say the least, but a genuinely fascinating one — offering a rare behind-the-scenes look at how a local legend manages his public presence.</p>
+                    <div class="achievements">
+                        <span class="badge small">Content Production</span>
+                    </div>
+                </div>
+            </div><!-- /#gallery -->
+
+            <!-- ======== HLSR ======== -->
+            <div id="hlsr" class="company-details">
+                <div class="job" id="job-hlsr1">
+                    <h3>Media Production Intern</h3>
+                    <span class="company-name">Houston Livestock Show &amp; Rodeo | Feb – Mar 2023 &amp; Feb – Mar 2024</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p class="company-blurb">The Houston Livestock Show and Rodeo is one of the largest events of its kind in the world, drawing over two million attendees annually to NRG Park. It combines a professional rodeo, live concerts, and a major livestock exhibition, all while raising millions for Texas scholarships and education.</p>
+                    <p class="role-description">As a media production intern I operated live broadcast cameras during livestock and horse show events at NRG Center and NRG Arena, while also providing audio assistance for staff and contracted professional crews. I stepped into broadcast control room roles including Director and Associate Director, and supported the team with ongoing news monitoring and collecting broadcast clips relevant to HLSR coverage.</p>
+                    <div class="achievements">
+                        <span class="badge small">Live Broadcast</span>
+                        <span class="badge small">Control Room</span>
+                    </div>
+                    <ul class="projects-list">
+                        <li class="project-item">
+                            <div class="project-header" data-project="hlsr">
+                                <span class="project-folder">
+                                    <svg viewBox="0 0 100 80" class="closed"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#FFD700"/></svg>
+                                    <svg viewBox="0 0 100 80" class="open" style="display:none"><path d="M10,10 L40,10 L45,20 L90,20 L90,70 L10,70 Z" fill="#CC9900"/><path d="M10,20 L40,20 L45,30 L80,30 L15,30 Z" fill="#CC9900"/></svg>
+                                </span>
+                                <span class="project-text">HLSR 23 & 24 Internship</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="project-detail-panel" id="detail-hlsr1"></div>
+                </div>
+            </div><!-- /#hlsr -->
+
+            <!-- ======== OTHER EXPERIENCE ======== -->
+            <div id="other" class="company-details">
+                <p style="font-size:0.9rem; color:var(--dark-gray); margin-bottom:1.5rem; border-left:3px solid var(--black); padding-left:10px;">
+                    Shorter-term roles that fill in the timeline — shown here for full context.
+                </p>
+
+                <!-- Tokyo Story — Dec 2023 to Feb 2024, between YMCA Site Lead and Stinger -->
+                <div class="job" id="job-tokyo1">
+                    <h3>Social Media Content Creator</h3>
+                    <span class="company-name">Tokyo Story | Dec 2023 – Feb 2024</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p style="font-size:0.8rem; color:var(--dark-gray); margin-bottom:0.8rem; font-style:italic;">⟵ During this time: still at YMCA as Site Lead · Just before joining Stinger Chemical</p>
+                    <p class="company-blurb">Tokyo Story is a gacha machine arcade located in Houston, offering a unique experience built around Japanese capsule toy machines and arcade culture. The brand leaned heavily into social media to build its following and drive foot traffic.</p>
+                    <p class="role-description">I handled all aspects of social media content for Tokyo Story's TikTok (@TokyoStoryUSA) and Instagram — filming, editing, and posting everything myself. Beyond production, I managed the platforms day-to-day, advertised product appearances, and worked to grow and engage the audience through consistent, on-brand content.</p>
+                    <div class="achievements">
+                        <span class="badge small">TikTok LaunchS</span>
+                    </div>
+                </div>
+
+                <!-- Main Event — Apr 2017 to Aug 2017, earliest role -->
+                <div class="job" id="job-mainevent1">
+                    <h3>Game Attendant</h3>
+                    <span class="company-name">Main Event Entertainment | Apr 2017 – Aug 2017</span>
+                    <div class="progress-bar"><div class="progress-fill" style="width:100%"></div></div>
+                    <p style="font-size:0.8rem; color:var(--dark-gray); margin-bottom:0.8rem; font-style:italic;">⟵ Earliest role on record · Before YMCA and all media work</p>
+                    <p class="company-blurb">Main Event Entertainment is a national family entertainment chain offering bowling, laser tag, arcade games, and attractions. The Houston locations serve large volumes of families, groups, and event bookings year-round.</p>
+                    <p class="role-description">I worked on the entertainment floor assisting guests with games and equipment, hosting Laser Tag and gravity ropes activities, and keeping the space clean and well-stocked. It was a fast-paced, customer-facing role that taught me how to stay composed, communicate clearly, and deliver a great guest experience under pressure.</p>
+                    <div class="achievements">
+                        <span class="badge small">Guest Experience</span>
+                        <span class="badge small">Winners Room</span>
+                    </div>
+                </div>
+            </div><!-- /#other -->
+
+        </div><!-- /.company-details-container -->
+    </main>
+
+    <footer class="page-footer">
+        <p>© 2025 Luis A. Chavez — Swiss brutalist edition / red accent / grid system</p>
+    </footer>
+
+</div><!-- /.site-wrapper -->
+
+<script>
+/* ---- COMPANY SUB-NAV SWITCHING ---- */
+const companyBtns    = document.querySelectorAll('.company-btn');
+const companyPanels  = document.querySelectorAll('.company-details');
+
+companyBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        companyBtns.forEach(b => b.classList.remove('active'));
+        companyPanels.forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(btn.dataset.company).classList.add('active');
+    });
+});
+
+/* ---- PROJECT FOLDER DETAIL PANELS ---- */
+const projectDetails = {
+    pikes:    { title: 'Pikes Peak Documentary',  description: 'Tasked with assembling the full documentary for Stinger Chemical\'s sponsorship of Lew Boushier\'s Pikes Peak race entry. Without attending the event, I organized all raw footage submitted by the field team, completed approximately two weeks of logging and editing, and delivered a finished documentary capturing the full race experience.', photos: ["Photos/Webp.PikesPeak/1.webp","Photos/Webp.PikesPeak/2.webp","Photos/Webp.PikesPeak/3.webp","Photos/Webp.PikesPeak/5.webp","Photos/Webp.PikesPeak/6.webp","Photos/Webp.PikesPeak/7.webp","Photos/Webp.PikesPeak/8.webp","Photos/Webp.PikesPeak/9.webp","Photos/Webp.PikesPeak/10.webp","Photos/Webp.PikesPeak/11.webp","Photos/Webp.PikesPeak/12.webp","Photos/Webp.PikesPeak/13.webp"] },
+    sema:     { title: 'SEMA 2025',  description: 'Covered SEMA\'s fast-paced trade show floor as the sole media operator for the Stinger Chemical booth. Shot and filmed product demos and booth activity throughout each day, then returned to the hotel each evening to edit content and schedule all social media posts for release the following day. All media was catalogued and organized on-site for a clean handoff upon returning to Houston.', photos: ["Photos/Webp.SEMA2425/1.webp","Photos/Webp.SEMA2425/2.webp","Photos/Webp.SEMA2425/3.webp","Photos/Webp.SEMA2425/4.webp","Photos/Webp.SEMA2425/5.webp","Photos/Webp.SEMA2425/6.webp","Photos/Webp.SEMA2425/7.webp","Photos/Webp.SEMA2425/8.webp","Photos/Webp.SEMA2425/9.webp","Photos/Webp.SEMA2425/10.webp","Photos/Webp.SEMA2425/11.webp"] },
+    hive:     { title: 'The Hive Podcast',        description: 'Led the launch of "The Hive" podcast studio from concept to completion. Conducted equipment research, coordinated with team members on the physical build-out, and oversaw the full technical setup. The finished space was completed within one year and is now capable of hosting both podcast recordings and live streams at a professional level.', photos: ["Photos/Webp.TheHive/1.webp","Photos/Webp.TheHive/2.webp","Photos/Webp.TheHive/3.webp","Photos/Webp.TheHive/4.webp","Photos/Webp.TheHive/5.webp","Photos/Webp.TheHive/6.webp"] },
+    golfcar:  { title: 'Golf Car X Site & Videos', description: 'Collaborated with Eddy Davies on the development of Golf Car X — a white-label brand built around Stinger Chemical products for the golf cart market. Responsible for building out the website and producing video content tailored to the brand\'s identity. As the project grew, video strategy was refined to align with the brand direction, and the platform is now expanding into a golf cart management application for courses and maintenance teams.', photos: ["Photos/Webp.GCX/Home.webp","Photos/Webp.GCX/System.webp","Photos/Webp.GCX/Tools.webp","Photos/Webp.GCX/PopUp.webp","Photos/Webp.GCX/VideoLibrary.webp"] },
+    training: { title: 'Live Training',           description: 'Designed and deployed a dual PTZ camera live training setup to support professional-grade instructor-led sessions for detailers worldwide. Working with limited initial equipment, the system was built to capture both the presenter and their work surface simultaneously — allowing remote viewers to see the slide deck, hear the instructor, and follow hands-on technique. The studio continues to grow as resources allow, and remains the highest-investment production space in the facility.', photos: ["Photos/Webp.Live/1.webp","Photos/Webp.Live/c1.webp","Photos/Webp.Live/c2.webp","Photos/Webp.Live/Control.webp","Photos/Webp.Live/Devices.webp"] },
+    hive2:    { title: 'The Hive Porject', description: 'With a working proof of concept, I was able to demonstrate that producing a podcast was a viable and achievable goal. At the time, however, the team underestimated the level of ongoing dedication a podcast requires. The idea immediately captured their attention, but the reality of execution took time to set in — and eventually, they gained a clear understanding of what the commitment truly involved.', photos: [] },
+    training2:{ title: 'Live Training Multicam',   description: 'The team had already been conducting training sessions for roughly four years, relocating the setup multiple times before finally settling into a permanent space. Once established, the goal shifted toward reaching a wider audience, which led to the idea of live streaming. After evaluating our options, we determined YouTube was the right platform to focus on exclusively. From there, I guided the team in investing in the necessary equipment — microphones, a dedicated PC, and a switcher — to ensure a polished and professional viewing experience.', photos: [] },
+    sema2:    { title: 'SEMA 2024',                description: 'Supported media coverage at SEMA 2024 as part of the Social Media Assistant role. Assisted with filming booth activity and product demonstrations on the trade show floor, contributing footage and content to the social media pipeline, while maintaining thorough organization of all files throughout the event.', photos: [] },
+    brandconsolidation: { title: 'Brand Consolidation', description: 'Audited all active Stinger Chemical social media accounts and unified them under a single, controlled brand message. Standardized visual identity, tone, and posting cadence across platforms to ensure every channel reflected the same voice. Eliminated inconsistencies that had built up across accounts managed by different people over time, resulting in a cohesive presence that was easier to manage and more recognizable to the audience.', photos: [] },
+    mack:     { title: 'Photos',                  description: 'Interview series and behind-the-scenes content featuring Mattress Mack and Gallery Furniture.', photos: ['https://via.placeholder.com/300x200?text=Mack+1', 'https://via.placeholder.com/300x200?text=Mack+2', 'https://via.placeholder.com/300x200?text=Mack+3'] },
+    hlsr:     { title: 'HLSR 2023 & 2024',        description: 'The Houston Livestock Show and Rodeo internship provided direct, hands-on experience across all aspects of live broadcast production. Responsibilities included assembling and operating professional cameras during live events, observing and supporting the broadcast control room used for both HLSR and Houston Texans game coverage, and gaining a comprehensive understanding of large-scale live production workflows.', photos: ["Photos/Webp.HLSR/1.webp","Photos/Webp.HLSR/2.webp","Photos/Webp.HLSR/3.webp","Photos/Webp.HLSR/4.webp","Photos/Webp.HLSR/5.webp","Photos/Webp.HLSR/6.webp","Photos/Webp.HLSR/7.webp","Photos/Webp.HLSR/8.webp"] }
+};
+
+document.querySelectorAll('.project-header').forEach(header => {
+    header.addEventListener('click', (e) => {
+        e.stopPropagation();
+
+        const projectId   = header.dataset.project;
+        const projectItem = header.closest('.project-item');
+        const job         = header.closest('.job');
+        if (!job) return;
+
+        const panel   = job.querySelector('.project-detail-panel');
+        if (!panel) return;
+
+        const folder  = header.querySelector('.project-folder');
+        const details = projectDetails[projectId] || { title: 'Project', description: 'No details available.', photos: [] };
+
+        /* Render content */
+        panel.innerHTML = `
+            <div class="detail-title">${details.title}</div>
+            <div class="detail-description">${details.description}</div>
+            <div class="detail-photos">${details.photos.map((src, i) => `<img src="${src}" alt="${details.title} photo ${i+1}" data-title="${details.title}" loading="lazy" onclick="openLightbox(this)">`).join('')}</div>
+        `;
+
+        const alreadyOpen = panel.classList.contains('active') && panel.dataset.activeProject === projectId;
+
+        /* Reset all folders + highlights in this job */
+        job.querySelectorAll('.project-item').forEach(i => i.classList.remove('highlight'));
+        job.querySelectorAll('.project-folder').forEach(f => {
+            f.querySelector('.closed').style.display = 'block';
+            f.querySelector('.open').style.display   = 'none';
+        });
+        panel.classList.remove('active');
+        panel.dataset.activeProject = '';
+
+        if (!alreadyOpen) {
+            panel.classList.add('active');
+            panel.dataset.activeProject = projectId;
+            projectItem.classList.add('highlight');
+            if (folder) {
+                folder.querySelector('.closed').style.display = 'none';
+                folder.querySelector('.open').style.display   = 'block';
+            }
+        }
+    });
+});
+
+/* ---- LIGHTBOX ---- */
+let lbPhotos = [];
+let lbIndex  = 0;
+let lbTitle  = '';
+
+function updateLightbox() {
+    document.getElementById('lightbox-img').src = lbPhotos[lbIndex];
+    document.getElementById('lightbox-counter').textContent = lbPhotos.length > 1
+        ? `${lbIndex + 1} / ${lbPhotos.length}` : '';
+    document.getElementById('lightbox-prev').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
+    document.getElementById('lightbox-next').style.display = lbPhotos.length > 1 ? 'flex' : 'none';
+}
+
+function openLightbox(img) {
+    /* Collect all sibling photos from the same detail panel */
+    const panel = img.closest('.detail-photos');
+    if (panel) {
+        lbPhotos = Array.from(panel.querySelectorAll('img')).map(i => i.src);
+        lbIndex  = Array.from(panel.querySelectorAll('img')).indexOf(img);
+    } else {
+        lbPhotos = [img.src];
+        lbIndex  = 0;
+    }
+    lbTitle = img.dataset.title || '';
+    document.getElementById('lightbox-caption').textContent = lbTitle;
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+}
+
+function lightboxNav(dir) {
+    lbIndex = (lbIndex + dir + lbPhotos.length) % lbPhotos.length;
+    updateLightbox();
+}
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.getElementById('lightbox-img').src = '';
+    document.body.style.overflow = '';
+}
+
+document.getElementById('lightbox').addEventListener('click', function(e) {
+    if (e.target === this) closeLightbox();
+});
+
+document.addEventListener('keydown', function(e) {
+    if (!document.getElementById('lightbox').classList.contains('active')) return;
+    if (e.key === 'Escape')     closeLightbox();
+    if (e.key === 'ArrowLeft')  lightboxNav(-1);
+    if (e.key === 'ArrowRight') lightboxNav(1);
+});
+</script>
+<!-- LIGHTBOX -->
+<div id="lightbox">
+    <span id="lightbox-close" onclick="closeLightbox()">✕</span>
+    <div id="lightbox-counter"></div>
+    <span class="lightbox-nav" id="lightbox-prev" onclick="lightboxNav(-1)">&#8249;</span>
+    <img id="lightbox-img" src="" alt="">
+    <span class="lightbox-nav" id="lightbox-next" onclick="lightboxNav(1)">&#8250;</span>
+    <div id="lightbox-caption"></div>
+</div>
+
+</body>
+</html>

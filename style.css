@@ -1,0 +1,247 @@
+/* ============================================================
+   LUIS CHAVEZ · PORTFOLIO — SHARED STYLESHEET
+   Swiss Brutalist · Red Accent · Grid System
+   ============================================================ */
+
+/* ----- TOKENS ----- */
+:root {
+    --black:      #000000;
+    --white:      #ffffff;
+    --red:        #ff3300;
+    --gray:       #f2f2f2;
+    --light-gray: #e0e0e0;
+    --dark-gray:  #333333;
+}
+
+/* ----- RESET ----- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ----- BASE ----- */
+body {
+    font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    background: var(--white);
+    color: var(--black);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 0;
+    line-height: 1.4;
+}
+
+.site-wrapper {
+    width: 100%;
+    background: var(--white);
+    border-top: 4px solid var(--red);
+}
+
+/* ----- HEADER / NAV ----- */
+header {
+    background: var(--white);
+    padding: 20px 20px 0 20px;
+    border-bottom: 2px solid var(--black);
+}
+
+.header-top {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--black);
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+.header-tagline {
+    color: var(--red);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+}
+
+/* Nav: <a> tags styled identically to the original <button> tabs */
+nav.tabs {
+    display: flex;
+    gap: 2px;
+    flex-wrap: wrap;
+    margin-top: 5px;
+}
+
+nav.tabs a {
+    display: inline-block;
+    padding: 8px 20px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--black);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.1s ease;
+    font-family: 'Helvetica Neue', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: none;
+}
+
+nav.tabs a:hover {
+    border-bottom-color: var(--red);
+    color: var(--red);
+    background: none;
+}
+
+nav.tabs a.active {
+    border-bottom-color: var(--red);
+    color: var(--red);
+    font-weight: 700;
+    background: none;
+}
+
+/* ----- MAIN ----- */
+main {
+    background: var(--white);
+    padding: 40px 20px;
+    min-height: 500px;
+}
+
+/* ----- TYPOGRAPHY ----- */
+h2 {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--black);
+    text-transform: uppercase;
+    letter-spacing: -0.02em;
+    margin: 0 0 1rem 0;
+    border-bottom: 3px solid var(--red);
+    padding-bottom: 0.3rem;
+    display: inline-block;
+}
+
+h3 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--black);
+    margin: 1.5rem 0 0.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+}
+
+h3::before {
+    content: '■';
+    color: var(--red);
+    margin-right: 8px;
+    font-size: 1.2rem;
+}
+
+p, li {
+    font-size: 1.1rem;
+    color: var(--dark-gray);
+    font-weight: 400;
+}
+
+ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 0.4rem;
+    padding-left: 1.2rem;
+    position: relative;
+}
+
+li::before {
+    content: '—';
+    color: var(--red);
+    position: absolute;
+    left: 0;
+}
+
+a {
+    color: var(--red);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 1px solid var(--red);
+}
+
+a:hover {
+    background: var(--red);
+    color: var(--white);
+}
+
+/* ----- BADGES ----- */
+.badge {
+    border: 2px solid var(--black);
+    padding: 4px 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    letter-spacing: 0.5px;
+    background: var(--white);
+    color: var(--black);
+}
+
+.badge.red {
+    border-color: var(--red);
+    background: var(--red);
+    color: var(--white);
+}
+
+.badge.small {
+    border: 1px solid var(--black);
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    background: var(--white);
+}
+
+.badge-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.badge-container span::before,
+.achievements span::before {
+    content: none;
+}
+
+/* ----- FOOTER ----- */
+.page-footer {
+    margin-top: 30px;
+    padding: 20px;
+    color: var(--dark-gray);
+    font-size: 0.9rem;
+    text-align: center;
+    border-top: 2px solid var(--black);
+    width: 100%;
+}
+
+/* ----- RESPONSIVE ----- */
+@media screen and (max-width: 768px) {
+    h1 { font-size: 2rem; }
+}
+
+@media screen and (min-width: 1920px) {
+    main { padding: 60px 20px; }
+    h1   { font-size: 3rem; }
+    h2   { font-size: 2.8rem; }
+}
+
+@media screen and (min-width: 2560px) {
+    body { font-size: 1.2rem; }
+    h1   { font-size: 4rem; }
+    h2   { font-size: 3.5rem; }
+}

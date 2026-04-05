@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luis Chavez · Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ---- HOME-SPECIFIC STYLES ---- */
+        .home-grid {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 20px;
+            margin-bottom: 40px;
+            align-items: start;
+        }
+
+        .headshot-card {
+            border: 3px solid var(--black);
+            padding: 10px;
+            background: var(--gray);
+        }
+
+        .headshot {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            background: #ccc;
+            border: 2px solid var(--black);
+            display: block;
+        }
+
+        .intro-card {
+            border: 3px solid var(--black);
+            padding: 14px 18px;
+            background: var(--white);
+        }
+
+        /* Name + tagline row */
+        .intro-top {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .intro-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--black);
+            margin: 0;
+        }
+
+        .intro-tagline {
+            font-size: 0.9rem;
+            color: var(--dark-gray);
+            margin: 0;
+        }
+
+        /* Three-column info grid inside the card */
+        .intro-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+        .intro-col h3 {
+            font-size: 0.8rem;
+            margin: 0 0 4px 0;
+            letter-spacing: 1px;
+        }
+
+        .intro-col p,
+        .intro-col li {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+            margin-bottom: 0.2rem;
+            line-height: 1.4;
+        }
+
+        .intro-col ul { margin: 0; }
+
+        .terminal-line {
+            font-family: monospace;
+            background: var(--black);
+            color: var(--white);
+            padding: 2px 6px;
+            font-size: 0.75rem;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+
+        .skill-list-compact li { margin-bottom: 0.2rem; font-size: 0.85rem; }
+
+        /* ---- GALLERY SECTION ---- */
+        .gallery-section {
+            margin-top: 60px;
+            border-top: 3px solid var(--red);
+            padding-top: 35px;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 28px;
+            margin-top: 25px;
+        }
+
+        .gallery-item {
+            border: 3px solid var(--black);
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.1s ease;
+        }
+
+        .gallery-item:hover { border-color: var(--red); }
+
+        .gallery-item img {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            object-fit: cover;
+            display: block;
+            border-bottom: 2px solid var(--black);
+        }
+
+        .gallery-item p {
+            padding: 14px 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            color: var(--black);
+            margin: 0;
+            flex: 1;
+        }
+
+        .gallery-item p::before {
+            content: '▶';
+            color: var(--red);
+            margin-right: 8px;
+            font-size: 0.8rem;
+        }
+
+        /* ---- MODAL / LIGHTBOX ---- */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active { display: flex; }
+
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.88);
+            cursor: pointer;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10000;
+            background: var(--white);
+            border: 3px solid var(--black);
+            padding: 40px 24px 24px;
+            max-width: min(860px, 92vw);
+            width: 100%;
+            box-shadow: 8px 8px 0 var(--black);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 58vh;
+            object-fit: contain;
+            border: 2px solid var(--black);
+            display: block;
+        }
+
+        .modal-caption {
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--red);
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .modal-description {
+            font-size: 0.95rem;
+            color: var(--dark-gray);
+            text-align: center;
+            max-width: 640px;
+            line-height: 1.6;
+            border-left: 3px solid var(--red);
+            padding: 8px 14px;
+            text-align: left;
+            background: var(--gray);
+        }
+
+        .modal-counter {
+            font-size: 0.85rem;
+            color: var(--dark-gray);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 8px;
+            right: 12px;
+            font-size: 2rem;
+            line-height: 1;
+            font-weight: 700;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: var(--black);
+            font-family: inherit;
+            padding: 0 4px;
+            z-index: 10001;
+        }
+
+        .modal-close:hover { color: var(--red); }
+
+        .modal-prev,
+        .modal-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--white);
+            border: 2px solid var(--black);
+            font-size: 2rem;
+            line-height: 1;
+            font-weight: 700;
+            cursor: pointer;
+            padding: 6px 14px;
+            font-family: inherit;
+            z-index: 10001;
+            transition: all 0.1s;
+        }
+
+        .modal-prev { left: -56px; }
+        .modal-next { right: -56px; }
+
+        .modal-prev:hover,
+        .modal-next:hover {
+            background: var(--red);
+            color: var(--white);
+            border-color: var(--red);
+        }
+
+        /* collapse arrows inside modal on small screens */
+        @media (max-width: 700px) {
+            .modal-prev { left: 0; top: auto; bottom: -48px; transform: none; }
+            .modal-next { right: 0; top: auto; bottom: -48px; transform: none; }
+            .modal-content { padding-bottom: 70px; }
+        }
+
+        /* ---- MODAL LINK BUTTON ---- */
+        .modal-link {
+            display: inline-block;
+            background: var(--red);
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 8px 18px;
+            border: 2px solid var(--black);
+            text-decoration: none;
+            transition: background 0.1s ease, color 0.1s ease;
+            align-self: center;
+        }
+        .modal-link:hover {
+            background: var(--black);
+            color: var(--white);
+        }
+
+        /* ---- RESPONSIVE ---- */
+        @media (max-width: 1100px) { .gallery-grid { grid-template-columns: repeat(3, 1fr); gap: 24px; } }
+        @media (max-width: 800px)  { .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; } .intro-columns { grid-template-columns: 1fr 1fr; } }
+        @media (max-width: 500px)  { .gallery-grid { grid-template-columns: 1fr; gap: 16px; } }
+        @media (max-width: 768px)  { .home-grid { grid-template-columns: 1fr; } .intro-columns { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+<div class="site-wrapper">
+
+    <header>
+        <div class="header-top">
+            <h1>Luis Chavez</h1>
+            <span class="header-tagline">Media Production</span>
+        </div>
+        <nav class="tabs">
+            <a href="index.html" class="active">Home</a>
+            <a href="work.html">Experience</a>
+            <a href="contact.html">Contact</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- BIO GRID -->
+        <div class="home-grid">
+            <div class="headshot-card">
+                <img src="Photos/Head Shot.webp" alt="Luis Chavez" class="headshot" loading="lazy">
+            </div>
+            <div class="intro-card">
+                <span class="terminal-line">$ whoami</span>
+                <div class="intro-top">
+                    <p class="intro-name">Luis A. Chavez</p>
+                    <p class="intro-tagline"><strong>Media production specialist</strong> · Houston, TX · Currently at Stinger Chemical</p>
+                </div>
+
+                <div class="intro-columns">
+                    <div class="intro-col">
+                        <h3>About</h3>
+                        <p>Enthusiastic about personal &amp; professional growth. Focused on video production, podcasting, and social media. B.A. Media Production, Univ. of Houston (2024).</p>
+                    </div>
+                    <div class="intro-col">
+                        <h3>Skills</h3>
+                        <ul>
+                            <li>Video / Audio Recording &amp; Editing</li>
+                            <li>Social Media Management</li>
+                            <li>Podcast Production</li>
+                            <li>Live Camera Operation</li>
+                            <li>Digital Asset Management</li>
+                            <li>Script Writing &amp; Editing</li>
+                        </ul>
+                    </div>
+                    <div class="intro-col">
+                        <h3>Education</h3>
+                        <p><strong>B.A. Media Production</strong><br>University of Houston, 2024</p>
+                        <p style="margin-top:6px;"><strong>Associate of Arts</strong><br>Lone Star College, 2021</p>
+                        <div class="badge-container" style="margin-top:8px; gap:5px;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- GALLERY -->
+        <div class="gallery-section">
+            <h2 style="border-bottom:none; display:block; margin-bottom:0;">Projects / Gallery</h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" data-project="pikes">
+                    <img src="Photos/Webp.PikesPeak/5.webp" alt="Pikes Peak documentary" loading="lazy">
+                    <p>Pikes Peak · 2025</p>
+                </div>
+                <div class="gallery-item" data-project="sema">
+                    <img src="Photos/Webp.SEMA2425/2.webp" alt="SEMA 2024 and 2025" loading="lazy">
+                    <p>SEMA 2024 & 2025 · Stinger</p>
+                </div>
+                <div class="gallery-item" data-project="hive">
+                    <img src="Photos/Webp.TheHive/2.webp" alt="The Hive podcast studio" loading="lazy">
+                    <p>The Hive · podcast</p>
+                </div>
+                <div class="gallery-item" data-project="golfcar">
+                    <img src="Photos/Webp.GCX/Home.webp" alt="Golf Car X website launch" loading="lazy">
+                    <p>Golf Car X · launch</p>
+                </div>
+                <div class="gallery-item" data-project="training">
+                    <img src="Photos/Webp.Live/1.webp" alt="Live training session" loading="lazy">
+                    <p>Live training · 2024</p>
+                </div>
+                <div class="gallery-item" data-project="rodeo">
+                    <img src="Photos/Webp.HLSR/3.webp" alt="Houston Rodeo broadcast" loading="lazy">
+                    <p>HLSR 2024 & 2025 · live camera</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="page-footer">
+        <p>© 2025 Luis A. Chavez — Swiss brutalist edition / red accent / grid system</p>
+    </footer>
+
+</div><!-- /.site-wrapper -->
+
+<!-- ============================================================
+     LIGHTBOX MODAL — lives at body level, outside all wrappers
+     ============================================================ -->
+<div id="galleryModal" class="modal" role="dialog" aria-modal="true" aria-label="Project gallery">
+    <div class="modal-overlay" id="modalOverlay"></div>
+    <div class="modal-content">
+        <button class="modal-close" id="modalClose" aria-label="Close">&times;</button>
+        <img class="modal-image" id="modalImage" src="" alt="Project photo">
+        <div class="modal-caption" id="modalCaption"></div>
+        <div class="modal-description" id="modalDescription"></div>
+        <a class="modal-link" id="modalLink" href="#" target="_blank" rel="noopener noreferrer" style="display:none;">&#8599; View Project</a>
+        <div class="modal-counter" id="modalCounter"></div>
+        <button class="modal-prev" id="modalPrev" aria-label="Previous image">&#8249;</button>
+        <button class="modal-next" id="modalNext" aria-label="Next image">&#8250;</button>
+    </div>
+</div>
+
+<script>
+/* ============================================================
+   GALLERY MODAL — fully self-contained
+   ============================================================ */
+const projectGalleries = {
+    pikes:    { name: 'Pikes Peak · 2025',      description: 'Full production of the Pikes Peak International Hill Climb documentary. I did not attened due to a wedding at the time but I was able to gather all footage that was captured and make a comprehensive documentary. — location filming at 14,115 ft, post-production, and sound mixing. Featured at a local festival.', link: 'https://youtu.be/uBp9tTCdJpw?si=MaYVJOI4-ySva9_A', linkLabel: 'Watch Documentary', images: ["Photos/Webp.PikesPeak/6.webp","Photos/Webp.PikesPeak/11.webp","Photos/Webp.PikesPeak/13.webp"] }
+    ,sema:     { name: 'SEMA 2024 & 2025 · Stinger',    description: 'Shot and edited the official booth recap for SEMA in Las Vegas. Covered attendee interviews, live demos, and product highlights for Stinger Chemical.',  images: ["Photos/Webp.SEMA2425/9.webp","Photos/Webp.SEMA2425/11.webp","Photos/Webp.SEMA2425/1.webp"] }
+    ,hive:     { name: 'The Hive · Podcast',     description: '"The Hive" podcast studio — from empty room to fully equipped professional set. Managed camera, lighting, and audio install. ', link: 'https://www.youtube.com/@stingerchemical/podcasts', linkLabel: 'Listen to Podcast', images: ["Photos/Webp.TheHive/1.webp","Photos/Webp.TheHive/4.webp","Photos/Webp.TheHive/5.webp"] }
+    ,golfcar:  { name: 'Golf Car X · Launch',    description: 'Golf Car X website launch and build. Showcasing golf cart cleaning chemicals, accessories, and tutorial videos.', link: 'https://www.golfcarx.com/', linkLabel: 'Visit Website', images: ["Photos/Webp.GCX/Home.webp","Photos/Webp.GCX/System.webp","Photos/Webp.GCX/VideoLibrary.webp"] }
+    ,training: { name: 'Live training · 2024',   description: 'Multicam training corses covering safety protocols, product knowledge, and customer service — Managed technical build out. Managed live control of PTZ camera,switcher board and audio for live production.', link: 'https://www.youtube.com/@stingerchemical/streams', linkLabel: 'Watch Live Training', images: ["Photos/Webp.Live/1.webp","Photos/Webp.Live/c1.webp","Photos/Webp.Live/Control.webp"] }
+    ,rodeo:    { name: 'HLSR 2024 & 2025 · Live camera operator',     description: 'Live broadcast camera operation for the Houston Livestock Show and Rodeo. Assisted with audio setup and maning cameras as well as control board operation.', images: ["Photos/Webp.HLSR/6.webp","Photos/Webp.HLSR/3.webp","Photos/Webp.HLSR/1.webp",] }
+};
+
+const modal       = document.getElementById('galleryModal');
+const modalImage  = document.getElementById('modalImage');
+const modalCaption = document.getElementById('modalCaption');
+const modalDescription = document.getElementById('modalDescription');
+const modalLink   = document.getElementById('modalLink');
+const modalCounter = document.getElementById('modalCounter');
+const modalClose  = document.getElementById('modalClose');
+const modalOverlay = document.getElementById('modalOverlay');
+const modalPrev   = document.getElementById('modalPrev');
+const modalNext   = document.getElementById('modalNext');
+
+let images = [];
+let idx    = 0;
+let currentDescription = '';
+
+function showImage() {
+    modalImage.src = images[idx];
+    modalCounter.textContent = `${idx + 1} / ${images.length}`;
+}
+
+function openGallery(projectId) {
+    const project = projectGalleries[projectId];
+    if (!project) return;
+    images = project.images;
+    idx    = 0;
+    modalCaption.textContent     = project.name;
+    modalDescription.textContent = project.description || '';
+    if (project.link) {
+        modalLink.href        = project.link;
+        modalLink.textContent = '↗ ' + (project.linkLabel || 'View Project');
+        modalLink.style.display = 'inline-block';
+    } else {
+        modalLink.style.display = 'none';
+    }
+    showImage();
+    modal.classList.add('active');
+    document.body.style.overflow = 'hidden';
+    modalClose.focus();
+}
+
+function closeGallery() {
+    modal.classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+function prev() { idx = (idx - 1 + images.length) % images.length; showImage(); }
+function next() { idx = (idx + 1) % images.length; showImage(); }
+
+/* Wire up gallery cards */
+document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', () => openGallery(item.dataset.project));
+});
+
+/* Close controls */
+modalClose.addEventListener('click',   closeGallery);
+modalOverlay.addEventListener('click', closeGallery);
+modalPrev.addEventListener('click',    (e) => { e.stopPropagation(); prev(); });
+modalNext.addEventListener('click',    (e) => { e.stopPropagation(); next(); });
+
+document.addEventListener('keydown', (e) => {
+    if (!modal.classList.contains('active')) return;
+    if (e.key === 'Escape')     closeGallery();
+    if (e.key === 'ArrowLeft')  prev();
+    if (e.key === 'ArrowRight') next();
+});
+</script>
+</body>
+</html>
