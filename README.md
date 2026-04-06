@@ -1,2 +1,1 @@
-# Luis-Chavez-Media
-# Luis Chavez Media  Personal portfolio site for Luis A. Chavez — media production specialist based in Houston, TX.  Built with vanilla HTML, CSS, and JavaScript. Features a project gallery, work experience, and contact page. 
+# My portfolio site for Luis A. Chavez — media production specialist based in Houston, TX.  Built with vanilla HTML, CSS, and JavaScript. Features a project gallery, work experience, and contact page. 
