@@ -1,0 +1,902 @@
+/* ==========================================================================
+   LUIS CHAVEZ — PORTFOLIO STYLESHEET
+   --------------------------------------------------------------------------
+   TABLE OF CONTENTS
+   01. Variables & Reset
+   02. Base Elements
+   03. Header / Navigation
+   04. Page Container
+   05. Hero
+   06. Section Headings
+   07. Project Grid (Bento)
+   08. About Section
+   09. Experience Page
+   10. Contact Modal
+   11. Footer
+   12. Responsive: Tablet (max 820px)
+   13. Responsive: Mobile (max 520px)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   01. VARIABLES & RESET
+   ========================================================================== */
+
+:root {
+  --ink: #080808;                    /* page background */
+  --surface: #111;                   /* card background */
+  --paper: #f4f1eb;                  /* main text color */
+  --pink: #ff5d73;                   /* accent color */
+  --muted: #999;                     /* secondary text */
+  --line: rgba(255, 255, 255, .15);  /* borders / dividers */
+  --radius: 28px;                    /* card corner radius */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* ==========================================================================
+   02. BASE ELEMENTS
+   ========================================================================== */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  font-synthesis: none;
+}
+
+/* Locks page scroll while a modal is open */
+body.modal-open {
+  overflow: hidden;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+a {
+  touch-action: manipulation;
+}
+
+
+/* ==========================================================================
+   03. HEADER / NAVIGATION
+   ========================================================================== */
+
+/* Fixed bar pinned to the top of the page */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  padding: 18px 24px;
+}
+
+/* Floating glass-effect nav pill */
+.nav-shell {
+  max-width: 1440px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 9px 10px 9px 18px;
+  background: rgba(18, 18, 18, .72);
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, .22);
+  backdrop-filter: blur(22px) saturate(150%);
+}
+
+/* Name / logo on the left */
+.brand {
+  text-decoration: none;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+/* Pink dot before the name */
+.brand:before {
+  content: "●";
+  margin-right: 9px;
+  color: var(--pink);
+}
+
+/* Center link group */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+/* Shared style for nav links, Contact button, and Résumé button */
+.nav-link,
+.contact-trigger,
+.resume-link {
+  border: 0;
+  background: transparent;
+  color: var(--paper);
+  padding: 11px 14px;
+  border-radius: 10px;
+  text-decoration: none;
+  font: 800 .7rem/1 Inter, sans-serif;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s, color .2s;
+}
+
+/* Hover + current page highlight */
+.nav-link:hover,
+.contact-trigger:hover,
+.nav-link.active {
+  background: rgba(255, 255, 255, .1);
+}
+
+/* Résumé button (light pill) */
+.resume-link {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.resume-link:hover {
+  background: var(--pink);
+}
+
+
+/* ==========================================================================
+   04. PAGE CONTAINER
+   ========================================================================== */
+
+main {
+  max-width: 1440px;
+  margin: auto;
+  padding: 0 24px 100px;
+}
+
+
+/* ==========================================================================
+   05. HERO (home page top section)
+   ========================================================================== */
+
+.hero {
+  min-height: 92vh;
+  display: grid;
+  grid-template-columns: 1.45fr .55fr;
+  gap: 50px;
+  align-items: end;
+  padding: 150px 0 80px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Small uppercase label (shared; used in cards/modals) */
+.eyebrow {
+  margin: 0 0 22px;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* Green "available" dot */
+.status-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 9px;
+  border-radius: 50%;
+  background: #71e693;
+  box-shadow: 0 0 0 5px rgba(113, 230, 147, .12);
+}
+
+/* Giant headline */
+h1 {
+  margin: 0;
+  font-size: clamp(5rem, 10.5vw, 10.5rem);
+  font-weight: 800;
+  line-height: .77;
+  letter-spacing: -.09em;
+}
+
+/* Pink emphasized word in headline */
+h1 em {
+  color: var(--pink);
+  font-style: normal;
+}
+
+/* Right-hand column (kicker, copy, buttons) */
+.hero-side {
+  padding-bottom: 12px;
+}
+
+.hero-kicker {
+  margin: 0 0 12px;
+  font-size: .72rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+.hero-copy {
+  max-width: 440px;
+  margin: 0;
+  font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+  line-height: 1.55;
+  color: #c8c8c8;
+  letter-spacing: -.02em;
+}
+
+/* Button row under hero text */
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 30px;
+}
+
+/* Both hero buttons share the outlined pill look */
+.hero-actions a,
+.hero-contact {
+  padding: 13px 15px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--paper);
+  font: 700 .75rem Inter;
+  text-decoration: none;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* "See my work" is the filled (light) button */
+.hero-actions a {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.hero-actions span {
+  margin-left: 20px;
+}
+
+
+/* ==========================================================================
+   06. SECTION HEADINGS
+   ========================================================================== */
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 24px;
+  padding: 110px 0 28px;
+}
+
+.section-head h2 {
+  margin: 4px 0 0;
+  font-size: clamp(2.6rem, 5vw, 5.2rem);
+  letter-spacing: -.065em;
+}
+
+.section-head p {
+  max-width: 420px;
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.section-number {
+  font: 700 .65rem Inter;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+
+/* ==========================================================================
+   07. PROJECT GRID (BENTO)
+   ========================================================================== */
+
+/* 4-column grid: 3 flexible rows + 1 short row for the "Full experience" card */
+.bento {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(3, minmax(200px, 1fr)) 150px;
+  gap: 12px;
+  min-height: 990px;
+}
+
+/* Single project card */
+.project {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  text-decoration: none;
+  background: var(--surface);
+  isolation: isolate;
+  transform: translateZ(0);
+}
+
+/* Card background photo */
+.project img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.8) contrast(1.04);
+  transition: transform .7s cubic-bezier(.16, 1, .3, 1), filter .4s;
+}
+
+/* Dark gradient overlay so text is readable */
+.project:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, .03) 20%, rgba(0, 0, 0, .9) 100%);
+  transition: background .4s;
+}
+
+/* Hover: zoom image + lighten overlay */
+.project:hover img {
+  transform: scale(1.055);
+  filter: saturate(1.05) contrast(1.02);
+}
+
+.project:hover:after {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 10%, rgba(0, 0, 0, .82) 100%);
+}
+
+/* Text block at bottom of card */
+.project-info {
+  position: relative;
+  width: 100%;
+  padding: 24px;
+  color: white;
+}
+
+/* Small category label (e.g. "Documentary · 2025") */
+.project-meta {
+  display: block;
+  margin-bottom: 8px;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: #efb9c1;
+}
+
+/* Project name + arrow row */
+.project-title {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: clamp(1.2rem, 1.8vw, 1.8rem);
+  font-weight: 800;
+  letter-spacing: -.045em;
+}
+
+/* Circular arrow badge */
+.project-title span:last-child {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: 0 0 38px;
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 50%;
+  font-size: 1rem;
+  transition: transform .25s, background .25s, color .25s;
+}
+
+.project:hover .project-title span:last-child {
+  transform: rotate(45deg);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* --- Card size modifiers --- */
+.p1 { grid-column: span 2; }   /* Pikes Peak: 2 columns wide */
+.p2 { grid-row: span 2; }      /* SEMA: 2 rows tall */
+.p6 { grid-row: span 2; }      /* HLSR: 2 rows tall */
+.p7 { grid-column: 1 / -1; }   /* Full experience: full width */
+.p8 { grid-column: span 2; }   /* Suddy's: 2 columns wide */
+
+/* --- Pink "Full experience" link card --- */
+.type-card {
+  background: var(--pink);
+  color: var(--ink);
+}
+
+/* Decorative concentric circles */
+.type-card:before {
+  content: "";
+  position: absolute;
+  width: 260px;
+  height: 260px;
+  right: -90px;
+  top: -100px;
+  border: 1px solid rgba(0, 0, 0, .28);
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 35px rgba(0, 0, 0, .05),
+    0 0 0 70px rgba(0, 0, 0, .04);
+}
+
+/* No dark overlay on the pink card */
+.type-card:after {
+  display: none;
+}
+
+.type-card .project-info,
+.type-card .project-meta {
+  color: var(--ink);
+}
+
+.type-card .project-meta {
+  opacity: .58;
+}
+
+.type-card .project-title span:last-child {
+  border-color: rgba(0, 0, 0, .35);
+}
+
+.type-card:hover .project-title span:last-child {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+
+/* ==========================================================================
+   08. ABOUT SECTION
+   ========================================================================== */
+
+.about {
+  display: grid;
+  grid-template-columns: .72fr 1.28fr;
+  gap: 12px;
+  margin-top: 120px;
+}
+
+/* Shared card styling for portrait + text */
+.portrait-card,
+.about-card {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--surface);
+}
+
+/* --- Portrait card --- */
+.portrait-card {
+  min-height: 620px;
+}
+
+/* Gradient fade at bottom for caption */
+.portrait-card:after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(0, 0, 0, .75));
+}
+
+.portrait-card img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  object-position: center top;
+  filter: grayscale(20%);
+}
+
+/* Caption on top of the photo */
+.portrait-label {
+  position: absolute;
+  left: 25px;
+  bottom: 24px;
+  z-index: 2;
+  font-size: .68rem;
+  font-weight: 800;
+  line-height: 1.45;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+/* --- About text card --- */
+.about-card {
+  padding: clamp(32px, 5vw, 72px);
+}
+
+.about-card .eyebrow {
+  margin-top: 40px;
+}
+
+.about-card h2 {
+  max-width: 780px;
+  margin: 0 0 28px;
+  font-size: clamp(2.8rem, 5vw, 5.4rem);
+  line-height: .94;
+  letter-spacing: -.07em;
+}
+
+.about-card > p {
+  margin: 0 0 17px;
+  max-width: 760px;
+  color: #aaa;
+  font-size: 1.04rem;
+  line-height: 1.7;
+}
+
+/* --- Skills grid (2 columns) --- */
+.skills {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  margin-top: 42px;
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+}
+
+.skill {
+  padding: 21px;
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+.skill strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: .68rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+.skill span {
+  color: #aaa;
+  line-height: 1.5;
+  font-size: .9rem;
+}
+
+
+/* ==========================================================================
+   09. EXPERIENCE PAGE
+   ========================================================================== */
+
+/* Top headline area */
+.experience-hero {
+  min-height: 58vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  padding: 150px 0 70px;
+  border-bottom: 1px solid var(--line);
+}
+
+/* Stack of job entries */
+.experience-list {
+  display: grid;
+  gap: 0;
+}
+
+/* Single job entry: meta on left, content on right */
+.role {
+  display: grid;
+  grid-template-columns: .55fr 1.45fr;
+  gap: 32px;
+  padding: 44px 0;
+  border-bottom: 1px solid var(--line);
+  background: transparent;
+}
+
+/* Company name */
+.role-company {
+  font-size: .69rem;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+  color: var(--pink);
+}
+
+/* Date range */
+.role-date {
+  display: block;
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: .78rem;
+}
+
+/* Job title */
+.role h2 {
+  margin: 0 0 14px;
+  font-size: clamp(1.7rem, 3vw, 3rem);
+  letter-spacing: -.05em;
+}
+
+/* Job description */
+.role p {
+  max-width: 800px;
+  margin: 0;
+  color: #aaa;
+  line-height: 1.65;
+}
+
+
+/* ==========================================================================
+   10. CONTACT MODAL
+   ========================================================================== */
+
+/* Full-screen dark backdrop (hidden until .open) */
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  background: rgba(0, 0, 0, .72);
+  backdrop-filter: blur(14px);
+}
+
+.contact-modal.open {
+  display: grid;
+}
+
+/* Pink popup card */
+.modal-card {
+  position: relative;
+  width: min(720px, 100%);
+  padding: clamp(36px, 6vw, 74px);
+  border: 1px solid rgba(0, 0, 0, .35);
+  border-radius: 32px;
+  background: var(--pink);
+  color: var(--ink);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, .5);
+}
+
+/* Round × button */
+.modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 44px;
+  height: 44px;
+  border: 1px solid rgba(0, 0, 0, .4);
+  border-radius: 50%;
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.modal-card .eyebrow {
+  color: var(--ink);
+  opacity: .55;
+}
+
+.modal-card h2 {
+  margin: 0 0 20px;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  line-height: .8;
+  letter-spacing: -.08em;
+}
+
+.modal-card p {
+  max-width: 500px;
+  line-height: 1.55;
+}
+
+/* Email / Call / LinkedIn / YouTube buttons */
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 32px;
+}
+
+.contact-actions a {
+  padding: 13px 16px;
+  border: 1px solid rgba(0, 0, 0, .45);
+  border-radius: 999px;
+  background: transparent;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+/* "Email Luis" is the filled button */
+.contact-actions a:first-child {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+
+/* ==========================================================================
+   11. FOOTER
+   ========================================================================== */
+
+.site-footer {
+  max-width: 1440px;
+  margin: auto;
+  padding: 30px 24px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: .7rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+
+/* ==========================================================================
+   12. RESPONSIVE: TABLET (max 820px)
+   ========================================================================== */
+
+@media (max-width: 820px) {
+
+  /* Header */
+  .site-header {
+    padding: 12px;
+  }
+
+  .nav-shell {
+    padding-left: 14px;
+  }
+
+  .brand {
+    font-size: .68rem;
+  }
+
+  /* Hide Home/Experience links; keep Contact + Résumé */
+  .nav-link {
+    display: none;
+  }
+
+  .nav-links {
+    gap: 2px;
+  }
+
+  .contact-trigger,
+  .resume-link {
+    padding: 10px 9px;
+    font-size: .62rem;
+  }
+
+  /* Page container */
+  main {
+    padding: 0 14px 70px;
+  }
+
+  /* Hero stacks to one column */
+  .hero {
+    min-height: 90vh;
+    grid-template-columns: 1fr;
+    gap: 35px;
+    padding: 130px 0 55px;
+  }
+
+  .hero-side {
+    max-width: 620px;
+  }
+
+  /* Section heading stacks */
+  .section-head {
+    align-items: start;
+    flex-direction: column;
+    padding-top: 80px;
+  }
+
+  /* Project grid becomes 2 columns */
+  .bento {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: none;
+    min-height: 0;
+  }
+
+  .project,
+  .p1,
+  .p2,
+  .p6,
+  .p7 {
+    grid-column: auto;
+    grid-row: auto;
+    min-height: 260px;
+  }
+
+  .p1,
+  .p7 {
+    grid-column: 1 / -1;
+  }
+
+  .p8 {
+    grid-column: span 2;
+  }
+
+  /* About stacks */
+  .about {
+    grid-template-columns: 1fr;
+    margin-top: 80px;
+  }
+
+  .portrait-card {
+    min-height: 500px;
+  }
+
+  /* Experience entries stack */
+  .role {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .site-footer {
+    padding: 22px 14px;
+  }
+}
+
+
+/* ==========================================================================
+   13. RESPONSIVE: MOBILE (max 520px)
+   ========================================================================== */
+
+@media (max-width: 520px) {
+
+  h1 {
+    font-size: 4.2rem;
+  }
+
+  /* Hero buttons stack vertically */
+  .hero-actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  /* Project grid becomes a single column */
+  .bento {
+    grid-template-columns: 1fr;
+  }
+
+  .project,
+  .p1,
+  .p7,
+  .p8 {
+    grid-column: auto;
+    min-height: 330px;
+  }
+
+  .project-title {
+    font-size: 1.45rem;
+  }
+
+  /* Skills become one column */
+  .skills {
+    grid-template-columns: 1fr;
+  }
+
+  .portrait-card {
+    min-height: 430px;
+  }
+
+  /* Footer stacks */
+  .site-footer {
+    gap: 14px;
+    flex-direction: column;
+  }
+}
